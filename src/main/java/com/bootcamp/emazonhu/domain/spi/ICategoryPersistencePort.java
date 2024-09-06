@@ -8,7 +8,7 @@ public interface ICategoryPersistencePort {
 
     void saveCategory(Category category);
 
-    List<Category> getAllCategories();
+    List<Category> getAllCategories(Integer page, Integer size, String sortBy, Boolean asc);
 
     Category getCategoryId(Long categoryId);
 

@@ -3,6 +3,7 @@ package com.bootcamp.emazonhu.infrastructure.input.rest;
 import com.bootcamp.emazonhu.application.dto.category.CategoryRequest;
 import com.bootcamp.emazonhu.application.dto.category.CategoryResponse;
 import com.bootcamp.emazonhu.application.handler.category.ICategoryHandler;
+import com.bootcamp.emazonhu.domain.model.Category;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -44,8 +45,13 @@ public class CategoryRestController {
             @ApiResponse(responseCode = "404", description = "No data found", content = @Content)
     })
     @GetMapping("/")
-    public ResponseEntity<List<CategoryResponse>> getAllCategories() {
-        return ResponseEntity.ok(categoryHandler.getAllCategories());
+    public ResponseEntity<List<Category>> getAllCategories(
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "10") Integer size,
+            @RequestParam(defaultValue = "categoryName") String sortBy,
+            @RequestParam(defaultValue = "true") Boolean asc
+    ) {
+        return ResponseEntity.ok(categoryHandler.getAllCategories(page, size, sortBy, asc));
     }
 
     @Operation(summary = "Get a category by their Id")

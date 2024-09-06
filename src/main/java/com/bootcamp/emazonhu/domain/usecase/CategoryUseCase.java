@@ -3,9 +3,11 @@ package com.bootcamp.emazonhu.domain.usecase;
 import com.bootcamp.emazonhu.domain.api.ICategoryServicePort;
 import com.bootcamp.emazonhu.domain.model.Category;
 import com.bootcamp.emazonhu.domain.spi.ICategoryPersistencePort;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class CategoryUseCase implements ICategoryServicePort {
 
     private final ICategoryPersistencePort categoryPersistencePort;
@@ -20,9 +22,10 @@ public class CategoryUseCase implements ICategoryServicePort {
     }
 
     @Override
-    public List<Category> getAllCategories() {
-        return categoryPersistencePort.getAllCategories();
+    public List<Category> getAllCategories(Integer page, Integer size, String sortBy, Boolean asc) {
+        return categoryPersistencePort.getAllCategories(page, size, sortBy, asc);
     }
+
 
     @Override
     public Category getCategoryId(Long categoryId) {

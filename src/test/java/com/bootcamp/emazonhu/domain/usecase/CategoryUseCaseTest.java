@@ -45,14 +45,19 @@ public class CategoryUseCaseTest {
         Category category1 = new Category(1L, "Category 1", "Description 1");
         Category category2 = new Category(2L, "Category 2", "Description 2");
         List<Category> expectedCategories = Arrays.asList(category1, category2);
-        when(categoryPersistencePort.getAllCategories()).thenReturn(expectedCategories);
+        Integer page = 0;
+        Integer size = 10;
+        String sortBy = "name";
+        Boolean asc = true;
+
+        when(categoryPersistencePort.getAllCategories(page, size, sortBy, asc)).thenReturn(expectedCategories);
 
         // Act
-        List<Category> actualCategories = categoryUseCase.getAllCategories();
+        List<Category> actualCategories = categoryUseCase.getAllCategories(page, size, sortBy, asc);
 
         // Assert
         assertEquals(expectedCategories, actualCategories);
-        verify(categoryPersistencePort, times(1)).getAllCategories();
+        verify(categoryPersistencePort, times(1)).getAllCategories(page, size, sortBy, asc);
     }
 
     @Test

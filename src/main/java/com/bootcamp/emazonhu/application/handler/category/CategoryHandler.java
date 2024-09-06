@@ -6,6 +6,7 @@ import com.bootcamp.emazonhu.application.mapper.category.CategoryRequestMapper;
 import com.bootcamp.emazonhu.application.mapper.category.CategoryResponseMapper;
 import com.bootcamp.emazonhu.domain.api.ICategoryServicePort;
 import com.bootcamp.emazonhu.domain.model.Category;
+import com.bootcamp.emazonhu.domain.usecase.CategoryUseCase;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ public class CategoryHandler implements ICategoryHandler{
     private final ICategoryServicePort categoryServicePort;
     private final CategoryRequestMapper categoryRequestMapper;
     private final CategoryResponseMapper categoryResponseMapper;
+    private final CategoryUseCase categoryUseCase;
 
     @Override
     public void saveCategory(CategoryRequest categoryRequest) {
@@ -29,8 +31,8 @@ public class CategoryHandler implements ICategoryHandler{
     }
 
     @Override
-    public List<CategoryResponse> getAllCategories() {
-        return categoryResponseMapper.toResonseList(categoryServicePort.getAllCategories());
+    public List<Category> getAllCategories(Integer page, Integer size, String sortBy, Boolean asc) {
+        return categoryUseCase.getAllCategories(page, size, sortBy, asc);
     }
 
     @Override

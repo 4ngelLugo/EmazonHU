@@ -8,6 +8,10 @@ import com.bootcamp.emazonhu.infrastructure.exception.category.CategoryNotFoundE
 import com.bootcamp.emazonhu.infrastructure.output.jpa.entity.CategoryEntity;
 import com.bootcamp.emazonhu.infrastructure.output.jpa.mapper.CategoryEntityMapper;
 import com.bootcamp.emazonhu.infrastructure.output.jpa.repository.ICategoryRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -32,13 +36,18 @@ public class CategoryJpaAdapter implements ICategoryPersistencePort {
     }
 
     @Override
-    public List<Category> getAllCategories() {
-        List<CategoryEntity> categoryEntityList = categoryRepository.findAll();
-        if (categoryEntityList.isEmpty()) {
+    public List<Category> getAllCategories(Integer page, Integer size, String sortBy, Boolean asc) {
+        Sort sort = asc ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<CategoryEntity> categoryEntityPage = categoryRepository.findAll(pageable);
+
+        if (categoryEntityPage.isEmpty()) {
             throw new NoDataFoundException();
         }
-        return categoryEntityMapper.toCategoryList(categoryEntityList);
+
+        return categoryEntityMapper.toCategoryList(categoryEntityPage.getContent());
     }
+
 
     @Override
     public Category getCategoryId(Long categoryId) {

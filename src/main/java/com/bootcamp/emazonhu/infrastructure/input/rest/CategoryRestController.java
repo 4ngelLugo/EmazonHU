@@ -26,7 +26,7 @@ public class CategoryRestController {
 
     private final ICategoryHandler categoryHandler;
 
-    @Operation(summary = "Add new category")
+    @Operation(summary = "Create new category")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Category created", content = @Content),
             @ApiResponse(responseCode = "409", description = "Category already exists", content = @Content)

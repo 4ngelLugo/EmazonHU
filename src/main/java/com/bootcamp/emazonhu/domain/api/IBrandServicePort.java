@@ -8,7 +8,7 @@ public interface IBrandServicePort {
 
     void saveBrand(Brand brand);
 
-    List<Brand> getAllBrands();
+    List<Brand> getAllBrands(Integer page, Integer size, String sortBy, Boolean asc);
 
     Brand getBrandById(Long brandId);
 

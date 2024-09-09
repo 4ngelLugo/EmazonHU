@@ -28,8 +28,8 @@ class BrandUseCaseTest {
     }
 
     @Test
-    void saveBrand() {
-        Brand brand = new Brand(1L, "Brand1", "Description1");
+    void saveBrand_shouldInvokePersistencePort() {
+        Brand brand = new Brand(1L, "BrandName", "Description");
 
         brandUseCase.saveBrand(brand);
 
@@ -37,24 +37,27 @@ class BrandUseCaseTest {
     }
 
     @Test
-    void getAllBrands() {
-        Brand brand1 = new Brand(1L, "Brand1", "Description1");
-        Brand brand2 = new Brand(2L, "Brand2", "Description2");
+    void getAllBrands_shouldReturnBrandList() {
+        Brand brand1 = new Brand(1L, "Brand 1", "Description 1");
+        Brand brand2 = new Brand(2L, "Brand 2", "Description 2");
         List<Brand> expectedBrands = Arrays.asList(brand1, brand2);
+        Integer page = 0;
+        Integer size = 10;
+        String sortBy = "name";
+        Boolean asc = true;
 
-        when(brandPersistencePort.getAllBrands()).thenReturn(expectedBrands);
+        when(brandPersistencePort.getAllBrands(page, size, sortBy, asc)).thenReturn(expectedBrands);
 
-        List<Brand> actualBrands = brandUseCase.getAllBrands();
+        List<Brand> actualBrands = brandUseCase.getAllBrands(page, size, sortBy, asc);
 
         assertEquals(expectedBrands, actualBrands);
-        verify(brandPersistencePort, times(1)).getAllBrands();
+        verify(brandPersistencePort, times(1)).getAllBrands(page, size, sortBy, asc);
     }
 
     @Test
-    void getBrandById() {
+    void getBrandById_shouldReturnBrand() {
         Long brandId = 1L;
-        Brand expectedBrand = new Brand(brandId, "Brand1", "Description1");
-
+        Brand expectedBrand = new Brand(brandId, "Brand 1", "Description 1");
         when(brandPersistencePort.getBrandById(brandId)).thenReturn(expectedBrand);
 
         Brand actualBrand = brandUseCase.getBrandById(brandId);
@@ -64,10 +67,9 @@ class BrandUseCaseTest {
     }
 
     @Test
-    void getBrandByName() {
-        String brandName = "Brand1";
-        Brand expectedBrand = new Brand(1L, brandName, "Description1");
-
+    void getBrandByName_shouldReturnBrand() {
+        String brandName = "Brand 1";
+        Brand expectedBrand = new Brand(1L, brandName, "Description 1");
         when(brandPersistencePort.getBrandByName(brandName)).thenReturn(expectedBrand);
 
         Brand actualBrand = brandUseCase.getBrandByName(brandName);
@@ -77,8 +79,8 @@ class BrandUseCaseTest {
     }
 
     @Test
-    void updateBrand() {
-        Brand brand = new Brand(1L, "Brand1", "Updated Description");
+    void updateBrand_shouldInvokePersistencePort() {
+        Brand brand = new Brand(1L, "BrandName", "Description");
 
         brandUseCase.updateBrand(brand);
 
@@ -86,7 +88,7 @@ class BrandUseCaseTest {
     }
 
     @Test
-    void deleteBrand() {
+    void deleteBrand_shouldInvokePersistencePort() {
         Long brandId = 1L;
 
         brandUseCase.deleteBrand(brandId);

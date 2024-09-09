@@ -8,6 +8,10 @@ import com.bootcamp.emazonhu.infrastructure.exception.brand.BrandNotFoundExcepti
 import com.bootcamp.emazonhu.infrastructure.output.jpa.entity.BrandEntity;
 import com.bootcamp.emazonhu.infrastructure.output.jpa.mapper.BrandEntityMapper;
 import com.bootcamp.emazonhu.infrastructure.output.jpa.repository.IBrandRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
@@ -30,14 +34,16 @@ public class BrandJpaAdapter implements IBrandPersistencePort {
     }
 
     @Override
-    public List<Brand> getAllBrands() {
-        List<BrandEntity> brandEntityList = brandRepository.findAll();
+    public List<Brand> getAllBrands(Integer page, Integer size, String sortBy, Boolean asc) {
+        Sort sort = Boolean.TRUE.equals(asc) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<BrandEntity> categoryEntityPage = brandRepository.findAll(pageable);
 
-        if (brandEntityList.isEmpty()) {
+        if (categoryEntityPage.isEmpty()) {
             throw new NoDataFoundException();
         }
 
-        return brandEntityMapper.toBrandList(brandEntityList);
+        return brandEntityMapper.toBrandList(categoryEntityPage.getContent());
     }
 
     @Override

@@ -3,9 +3,11 @@ package com.bootcamp.emazonhu.domain.usecase;
 import com.bootcamp.emazonhu.domain.api.IBrandServicePort;
 import com.bootcamp.emazonhu.domain.model.Brand;
 import com.bootcamp.emazonhu.domain.spi.IBrandPersistencePort;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class BrandUseCase implements IBrandServicePort {
 
     public final IBrandPersistencePort brandPersistencePort;
@@ -20,8 +22,8 @@ public class BrandUseCase implements IBrandServicePort {
     }
 
     @Override
-    public List<Brand> getAllBrands() {
-        return brandPersistencePort.getAllBrands();
+    public List<Brand> getAllBrands(Integer page, Integer size, String sortBy, Boolean asc) {
+        return brandPersistencePort.getAllBrands(page, size, sortBy, asc);
     }
 
     @Override

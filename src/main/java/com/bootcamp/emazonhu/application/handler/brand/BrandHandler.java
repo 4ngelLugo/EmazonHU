@@ -6,6 +6,7 @@ import com.bootcamp.emazonhu.application.mapper.brand.BrandRequestMapper;
 import com.bootcamp.emazonhu.application.mapper.brand.BrandResponseMapper;
 import com.bootcamp.emazonhu.domain.api.IBrandServicePort;
 import com.bootcamp.emazonhu.domain.model.Brand;
+import com.bootcamp.emazonhu.domain.usecase.BrandUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,7 @@ public class BrandHandler implements IBrandHandler{
     private final IBrandServicePort brandServicePort;
     private final BrandRequestMapper brandRequestMapper;
     private final BrandResponseMapper brandResponseMapper;
+    private final BrandUseCase brandUseCase;
 
     @Override
     public void saveBrand(BrandRequest brandRequest) {
@@ -28,8 +30,8 @@ public class BrandHandler implements IBrandHandler{
     }
 
     @Override
-    public List<BrandResponse> getAllBrands() {
-        return brandResponseMapper.toResponseList(brandServicePort.getAllBrands());
+    public List<Brand> getAllBrands(Integer page, Integer size, String sortBy, Boolean asc) {
+        return brandUseCase.getAllBrands(page, size, sortBy, asc);
     }
 
     @Override

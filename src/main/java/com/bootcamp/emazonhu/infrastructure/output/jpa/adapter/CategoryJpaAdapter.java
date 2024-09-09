@@ -36,7 +36,7 @@ public class CategoryJpaAdapter implements ICategoryPersistencePort {
 
     @Override
     public List<Category> getAllCategories(Integer page, Integer size, String sortBy, Boolean asc) {
-        Sort sort = asc ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Sort sort = Boolean.TRUE.equals(asc) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sort);
         Page<CategoryEntity> categoryEntityPage = categoryRepository.findAll(pageable);
 

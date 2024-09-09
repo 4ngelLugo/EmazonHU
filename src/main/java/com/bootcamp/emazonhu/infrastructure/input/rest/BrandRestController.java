@@ -3,6 +3,7 @@ package com.bootcamp.emazonhu.infrastructure.input.rest;
 import com.bootcamp.emazonhu.application.dto.brand.BrandRequest;
 import com.bootcamp.emazonhu.application.dto.brand.BrandResponse;
 import com.bootcamp.emazonhu.application.handler.brand.IBrandHandler;
+import com.bootcamp.emazonhu.domain.model.Brand;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -43,9 +44,15 @@ public class BrandRestController {
             @ApiResponse(responseCode = "404", description = "No data found", content = @Content)
     })
     @GetMapping("/")
-    public ResponseEntity<List<BrandResponse>> getAllBrands() {
-        return ResponseEntity.ok(brandHandler.getAllBrands());
+    public ResponseEntity<List<Brand>> getAllCategories(
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "10") Integer size,
+            @RequestParam(defaultValue = "brandName") String sortBy,
+            @RequestParam(defaultValue = "true") Boolean asc
+    ) {
+        return ResponseEntity.ok(brandHandler.getAllBrands(page, size, sortBy, asc));
     }
+
 
     @Operation(summary = "Get a brand by their Id")
     @ApiResponses(value = {

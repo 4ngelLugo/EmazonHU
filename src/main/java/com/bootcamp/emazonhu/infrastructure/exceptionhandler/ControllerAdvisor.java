@@ -5,6 +5,8 @@ import com.bootcamp.emazonhu.infrastructure.exception.brand.BrandNotFoundExcepti
 import com.bootcamp.emazonhu.infrastructure.exception.category.CategoryAlreadyExistException;
 import com.bootcamp.emazonhu.infrastructure.exception.category.CategoryNotFoundException;
 import com.bootcamp.emazonhu.infrastructure.exception.NoDataFoundException;
+import com.bootcamp.emazonhu.infrastructure.exception.product.ProductAlreadyExistException;
+import com.bootcamp.emazonhu.infrastructure.exception.product.ProductNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -28,6 +30,11 @@ public class ControllerAdvisor {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(Collections.singletonMap(MESSAGE, ExceptionResponse.BRAND_ALREADY_EXIST.getMessage()));
     }
 
+    @ExceptionHandler(ProductAlreadyExistException.class)
+    public ResponseEntity<Map<String, String>> handleProductAlreadyExistException(ProductAlreadyExistException productAlreadyExistException) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(Collections.singletonMap(MESSAGE, ExceptionResponse.PRODUCT_ALREADY_EXIST.getMessage()));
+    }
+
     @ExceptionHandler(CategoryNotFoundException.class)
     public ResponseEntity<Map<String, String>> handleCategoryNotFoundException(CategoryNotFoundException categoryNotFoundException) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonMap(MESSAGE, ExceptionResponse.CATEGORY_NOT_FOUND.getMessage()));
@@ -36,6 +43,11 @@ public class ControllerAdvisor {
     @ExceptionHandler(BrandNotFoundException.class)
     public ResponseEntity<Map<String, String>> handleBrandNotFoundException(BrandNotFoundException brandNotFoundException) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonMap(MESSAGE, ExceptionResponse.BRAND_NOT_FOUND.getMessage()));
+    }
+
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleProductNotFoundException(ProductNotFoundException productNotFoundException) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonMap(MESSAGE, ExceptionResponse.PRODUCT_NOT_FOUND.getMessage()));
     }
 
     @ExceptionHandler(NoDataFoundException.class)

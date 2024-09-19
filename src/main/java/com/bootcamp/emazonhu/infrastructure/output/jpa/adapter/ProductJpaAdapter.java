@@ -1,16 +1,22 @@
 package com.bootcamp.emazonhu.infrastructure.output.jpa.adapter;
 
+import com.bootcamp.emazonhu.domain.model.Category;
 import com.bootcamp.emazonhu.domain.model.Product;
 import com.bootcamp.emazonhu.domain.spi.IProductPersistencePort;
 import com.bootcamp.emazonhu.infrastructure.exception.NoDataFoundException;
 import com.bootcamp.emazonhu.infrastructure.exception.brand.BrandNotFoundException;
+import com.bootcamp.emazonhu.infrastructure.exception.category.CategoryAlreadyExistException;
+import com.bootcamp.emazonhu.infrastructure.exception.category.CategoryNotFoundException;
 import com.bootcamp.emazonhu.infrastructure.exception.product.ProductAlreadyExistException;
 import com.bootcamp.emazonhu.infrastructure.exception.product.ProductNotFoundException;
+import com.bootcamp.emazonhu.infrastructure.exception.product.WrongCategoriesQuantityException;
 import com.bootcamp.emazonhu.infrastructure.output.jpa.entity.ProductEntity;
 import com.bootcamp.emazonhu.infrastructure.output.jpa.mapper.ProductEntityMapper;
 import com.bootcamp.emazonhu.infrastructure.output.jpa.repository.IProductRepository;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ProductJpaAdapter implements IProductPersistencePort {
 
@@ -22,7 +28,6 @@ public class ProductJpaAdapter implements IProductPersistencePort {
         this.productEntityMapper = productEntityMapper;
     }
 
-
     @Override
     public void saveProduct(Product product) {
         if (product.getProductName() != null && productRepository.findByProductName(product.getProductName()).isPresent()) {
@@ -33,6 +38,22 @@ public class ProductJpaAdapter implements IProductPersistencePort {
             throw new BrandNotFoundException();
         }
 
+        if (product.getProductCategories() == null || product.getProductCategories().isEmpty() || product.getProductCategories().size() > 3) {
+            throw new WrongCategoriesQuantityException();
+        }
+
+        if (product.getProductCategories().stream().anyMatch(category -> category.getCategoryId() == 0)) {
+            throw new CategoryNotFoundException();
+        }
+
+        Set<Long> categoryIds = new HashSet<>();
+        boolean hasDuplicates = product.getProductCategories().stream()
+                .map(Category::getCategoryId)
+                .anyMatch(id -> !categoryIds.add(id));
+
+        if (hasDuplicates) {
+            throw new CategoryAlreadyExistException();
+        }
         productRepository.save(productEntityMapper.toEntity(product));
     }
 

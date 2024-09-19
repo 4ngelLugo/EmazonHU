@@ -20,6 +20,7 @@ public interface ProductResponseMapper {
         productResponse.setProductQuantity(product.getProductQuantity());
         productResponse.setProductPrice(product.getProductPrice());
         productResponse.setBrandName(product.getProductBrand().getBrandName());
+        productResponse.setCategories(product.getProductCategories());
         return productResponse;
     }
 

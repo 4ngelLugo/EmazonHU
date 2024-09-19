@@ -1,8 +1,11 @@
 package com.bootcamp.emazonhu.application.dto.product;
 
 import com.bootcamp.emazonhu.domain.model.Brand;
+import com.bootcamp.emazonhu.domain.model.Category;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -15,4 +18,5 @@ public class ProductRequest {
     private Long productPrice;
 
     private Brand productBrand;
+    private List<Category> productCategories;
 }

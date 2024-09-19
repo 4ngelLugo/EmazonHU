@@ -1,5 +1,7 @@
 package com.bootcamp.emazonhu.domain.model;
 
+import java.util.List;
+
 public class Product {
 
     private Long productId;
@@ -9,14 +11,16 @@ public class Product {
     private Long productPrice;
 
     private Brand productBrand;
+    private List<Category> productCategories;
 
-    public Product(Long productId, String productName, String productDescription, Long productQuantity, Long productPrice, Brand productBrand) {
+    public Product(Long productId, String productName, String productDescription, Long productQuantity, Long productPrice, Brand productBrand, List<Category> productCategories) {
         this.productId = productId;
         this.productName = productName;
         this.productDescription = productDescription;
         this.productQuantity = productQuantity;
         this.productPrice = productPrice;
         this.productBrand = productBrand;
+        this.productCategories = productCategories;
     }
 
     public Long getProductId() {
@@ -65,5 +69,13 @@ public class Product {
 
     public void setProductBrand(Brand productBrand) {
         this.productBrand = productBrand;
+    }
+
+    public List<Category> getProductCategories() {
+        return productCategories;
+    }
+
+    public void setProductCategories(List<Category> productCategories) {
+        this.productCategories = productCategories;
     }
 }

@@ -16,6 +16,9 @@ public class ProductUseCase implements IProductServicePort {
 
     @Override
     public void saveProduct(Product product) {
+        if (product.getProductCategories().isEmpty() || product.getProductCategories().size() > 3) {
+            return;
+        }
         productPersistencePort.saveProduct(product);
     }
 
